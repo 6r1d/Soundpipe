@@ -194,4 +194,8 @@ void sp_srand(sp_data *sp, uint32_t val)
     sp->rand = val;
 }
 
-
+SPFLOAT sp_clamp(SPFLOAT x, SPFLOAT lowerlimit, SPFLOAT upperlimit) {
+  if (x < lowerlimit) x = lowerlimit;
+  if (x > upperlimit) x = upperlimit;
+  return x;
+}

@@ -95,3 +95,6 @@ typedef struct {
     uint32_t pos;
 } sp_audio;
 
+/* Math helpers */
+
+SPFLOAT sp_clamp(SPFLOAT x, SPFLOAT lowerlimit, SPFLOAT upperlimit);
