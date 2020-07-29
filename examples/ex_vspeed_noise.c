@@ -23,11 +23,11 @@ int main() {
     ud.ns->amp = 0.8f;
     // mode for a value source can be 0 (white noise),
     // 1 (pink noise), 2 (Brown noise)
-    ud.ns->mode = 2;
+    ud.ns->mode = 1;
     // Distance between noise peaks influences
     // the sound in several ways
-    ud.ns->peak_distance = 100;
-    sp->len = 44100 * 9;
+    ud.ns->peak_distance = 34;
+    sp->len = 44100 * 5;
     sp_process(sp, &ud, write_noise);
     sp_vspeed_noise_destroy(&ud.ns);
     sp_destroy(&sp);
