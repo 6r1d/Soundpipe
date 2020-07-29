@@ -119,6 +119,7 @@ tseq \
 vdelay \
 voc \
 vocoder \
+vspeed_noise \
 waveset \
 wavin \
 wavout \
