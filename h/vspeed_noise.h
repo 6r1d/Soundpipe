@@ -7,6 +7,14 @@ typedef struct{
     int smps_passed;
     SPFLOAT peak_a;
     SPFLOAT peak_b;
+    // Pink noise data
+    unsigned int newrand;
+    unsigned int prevrand;
+    unsigned int k;
+    unsigned int seed;
+    unsigned int total;
+    uint32_t counter;
+    unsigned int dice[7];
 }sp_vspeed_noise;
 
 int sp_vspeed_noise_create(sp_vspeed_noise **ns);
