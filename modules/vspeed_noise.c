@@ -26,7 +26,7 @@ int update_peak_b(sp_data *sp, sp_vspeed_noise *ns) {
 
 int sp_vspeed_noise_create(sp_vspeed_noise **ns)
 {
-    *ns = malloc(sizeof(sp_vspeed_noise_destroy));
+    *ns = malloc(sizeof(sp_vspeed_noise));
     return SP_OK;
 }
 
