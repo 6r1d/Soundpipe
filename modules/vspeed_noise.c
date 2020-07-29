@@ -4,16 +4,6 @@
 #include "noise_util.c"
 #include <stdio.h>
 
-// Serp, a mix between smootherstep and lerp functions
-// Scale, and clamp pos to 0..1 range
-// Evaluate polynomial
-// Return a linear interpolation of a polynomial evaluation
-float serp(float a, float b, float pos) {
-  float x = sp_clamp(pos, 0.0, 1.0);
-  float poly = x * x * x * (x * (x * 6 - 15) + 10);
-  return a + poly * (b - a);
-}
-
 int update_peak_b(sp_data *sp, sp_vspeed_noise *ns) {
     switch (ns->mode) {
       case 1:
@@ -64,7 +54,7 @@ int sp_vspeed_noise_compute(sp_data *sp, sp_vspeed_noise *ns, SPFLOAT *in, SPFLO
         ns->peak_a = ns->peak_b;
         update_peak_b(sp, ns);
     }
-    float x = (float)ns->smps_passed / (float)ns->peak_distance;
+    SPFLOAT x = (SPFLOAT)ns->smps_passed / (SPFLOAT)ns->peak_distance;
     *out = serp(ns->peak_a, ns->peak_b, x);
     // Divide Brownian noise by 16
     if (ns->mode == 2) *out *= 0.0625f;
