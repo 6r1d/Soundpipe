@@ -4,7 +4,24 @@
 #include "noise_util.c"
 #include <stdio.h>
 
-int update_peak_b(sp_data *sp, sp_vspeed_noise *ns) {
+SPFLOAT sp_clamp(SPFLOAT x, SPFLOAT lowerlimit, SPFLOAT upperlimit) {
+  if (x < lowerlimit) x = lowerlimit;
+  if (x > upperlimit) x = upperlimit;
+  return x;
+}
+
+// Serp, a mix between smootherstep and lerp functions:
+//   scale, and clamp pos to 0..1 range,
+//   evaluate polynomial,
+//   return a linear interpolation of a polynomial evaluation
+SPFLOAT serp(SPFLOAT a, SPFLOAT b, SPFLOAT pos) {
+  SPFLOAT x = sp_clamp(pos, 0.0, 1.0);
+  SPFLOAT poly = x * x * x * (x * (x * 6 - 15) + 10);
+  return a + poly * (b - a);
+}
+
+// Sets a next peak value to a sample of a selected noise
+int update_next_peak(sp_data *sp, sp_vspeed_noise *ns) {
     switch (ns->mode) {
       case 1:
         ns->peak_b = sp_pink_noise_sample(sp, ns);
@@ -32,7 +49,7 @@ int sp_vspeed_noise_init(sp_data *sp, sp_vspeed_noise *ns)
     // Set smoothing position and peaks
     ns->smps_passed = 0;
     ns->peak_a = 0.0;
-    update_peak_b(sp, ns);
+    update_next_peak(sp, ns);
     // Pink noise preparation
     int i;
     ns->amp = 1.0;
@@ -52,7 +69,7 @@ int sp_vspeed_noise_compute(sp_data *sp, sp_vspeed_noise *ns, SPFLOAT *in, SPFLO
     } else {
         ns->smps_passed = 0;
         ns->peak_a = ns->peak_b;
-        update_peak_b(sp, ns);
+        update_next_peak(sp, ns);
     }
     SPFLOAT x = (SPFLOAT)ns->smps_passed / (SPFLOAT)ns->peak_distance;
     *out = serp(ns->peak_a, ns->peak_b, x);

@@ -194,18 +194,4 @@ void sp_srand(sp_data *sp, uint32_t val)
     sp->rand = val;
 }
 
-SPFLOAT sp_clamp(SPFLOAT x, SPFLOAT lowerlimit, SPFLOAT upperlimit) {
-  if (x < lowerlimit) x = lowerlimit;
-  if (x > upperlimit) x = upperlimit;
-  return x;
-}
 
-// Serp, a mix between smootherstep and lerp functions:
-//   scale, and clamp pos to 0..1 range,
-//   evaluate polynomial,
-//   return a linear interpolation of a polynomial evaluation
-SPFLOAT serp(SPFLOAT a, SPFLOAT b, SPFLOAT pos) {
-  SPFLOAT x = sp_clamp(pos, 0.0, 1.0);
-  SPFLOAT poly = x * x * x * (x * (x * 6 - 15) + 10);
-  return a + poly * (b - a);
-}
